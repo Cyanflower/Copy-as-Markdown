@@ -1,0 +1,13 @@
+{
+  "command.copySelected.title": "复制为md",
+  "command.category": "复制工具",
+  "configuration.title": "复制为Markdown",
+  "configuration.includeFileName.description": "是否包含文件名",
+  "configuration.includeFilePath.description": "是否包含文件路径（需要启用包含文件名选项）",
+  "configuration.filePathBase.description": "文件路径显示的基准路径（需要启用包含文件名选项）",
+  "configuration.filePathBase.workspace": "相对于VSCode工作区",
+  "configuration.filePathBase.absolute": "系统绝对路径",
+  "configuration.languageMap.description": "自定义语言映射，用于代码块语言标识。示例：{\"vue\": \"html\", \"jsx\": \"javascript\"}",
+  "configuration.addEllipsis.description": "部分选择时是否添加省略号（...）",
+  "configuration.addEllipsisDetail.description": "是否使用详细的省略号显示行数（需要启用添加省略号选项）"
+}
