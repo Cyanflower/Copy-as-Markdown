@@ -3,6 +3,14 @@
   "displayName": "Copy as Markdown",
   "description": "Copy selected code with markdown formatting",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cyanflower/copy-as-markdown.git"
+  },
+  "homepage": "https://github.com/cyanflower/copy-as-markdown#readme",
+  "bugs": {
+    "url": "https://github.com/cyanflower/copy-as-markdown/issues"
+  },
   "engines": {
     "vscode": "^1.102.0"
   },
