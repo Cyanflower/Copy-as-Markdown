@@ -14,14 +14,24 @@
 - ⌨️ **快捷键支持**：通过可自定义的热键快速访问
 - 🌍 **国际化支持**：自动适应您的 VSCode 语言设置
 - ⚙️ **高度可配置**：丰富的自定义选项
+- 📂 **资源管理器集成**：在资源管理器中右键文件/文件夹复制整个内容
+- 🗂️ **多文件支持**：一次选择并复制多个文件或文件夹
+- 🔄 **递归文件夹处理**：自动处理文件夹中的所有文本文件
 
 ## 使用方法
 
+### 复制选中代码
 1. 在 VSCode 中打开任意代码文件
 2. 选择您想要复制的代码片段
 3. 右键点击选中的内容
 4. 从上下文菜单中选择"复制为md"
 5. 格式化的 Markdown 内容现已复制到剪贴板
+
+### 复制整个文件/文件夹
+1. 在资源管理器面板中，右键点击一个或多个文件/文件夹
+2. 从上下文菜单中选择"复制为md"
+3. 所有选中的文件将作为 Markdown 代码块复制
+4. 文件夹将递归处理，包含所有文本文件
 
 **其他使用方式：**
 - 使用快捷键：`Ctrl+Alt+C`（Windows/Linux）或 `Cmd+Shift+C`（macOS）
@@ -29,28 +39,44 @@
 
 ## 输出格式
 
-### 全选文件内容时
-```
+### 单文件选择
+````
 filename.py
 ```python
 def hello_world():
     print("Hello, World!")
     return "success"
 ```
+````
+
+### 多文件选择
+````
+utils.py
+```python
+def helper_function():
+    return "helper"
+```
+
+main.js
+```javascript
+console.log("Hello World");
+```
+````
 
 ### 选择部分内容时（智能省略号）
 
 #### 选择文件开头部分
-```
+````
 filename.py:
 ```python
 def hello_world():
     print("Hello, World!")
 ...
 ```
+````
 
 #### 选择文件中间部分
-```
+````
 filename.py:
 ```python
 ...
@@ -58,18 +84,20 @@ def hello_world():
     print("Hello, World!")
 ...
 ```
+````
 
 #### 选择文件结尾部分
-```
+````
 filename.py:
 ```python
 ...
 def hello_world():
     print("Hello, World!")
 ```
+````
 
 #### 详细省略号模式（可选）
-```
+````
 src/utils.py:
 ```python
 省略上方 15 行...
@@ -77,6 +105,21 @@ def hello_world():
     print("Hello, World!")
 省略下方 8 行...
 ```
+````
+
+## 支持的文件类型
+
+扩展自动检测并处理文本文件，包括：
+
+- **编程语言**：JavaScript、TypeScript、Python、Java、C/C++/C#、Go、Rust、PHP、Ruby、Swift、Kotlin 等
+- **Web 技术**：HTML、CSS、SCSS、Vue、React（JSX/TSX）
+- **数据格式**：JSON、XML、YAML、TOML
+- **配置文件**：.env、.ini、.conf、.properties
+- **脚本文件**：Shell、PowerShell、批处理文件
+- **文档**：Markdown、纯文本
+- **特殊文件**：Dockerfile、Makefile、.gitignore
+
+在文件夹处理过程中自动跳过二进制文件。
 
 ## 配置选项
 
@@ -110,24 +153,6 @@ def hello_world():
 }
 ```
 
-## 支持的编程语言
-
-扩展支持所有 VSCode 识别的编程语言，包括但不限于：
-
-- JavaScript/TypeScript
-- Python
-- Java
-- C/C++/C#
-- HTML/CSS/SCSS
-- JSON/XML/YAML
-- Shell/PowerShell
-- Go/Rust
-- PHP/Ruby
-- Swift/Kotlin
-- SQL
-- Vue/React（JSX/TSX）
-- 以及更多...
-
 ## 智能特性
 
 ### 智能省略号
@@ -142,8 +167,14 @@ def hello_world():
 - 支持未保存的文件（显示为 "untitled"）
 - 可选的文件路径显示，支持工作区相对路径或绝对路径
 
+### 资源管理器集成
+- **单选**：右键任意文件复制其完整内容
+- **多选**：选择多个文件/文件夹一次性复制全部
+- **文件夹处理**：递归处理选中文件夹中的所有文本文件
+- **智能过滤**：只处理文本文件，自动跳过二进制文件
+
 ### 语言映射
-- 将 VSCode 语言 ID 映射为 Markdown 代码块标识符
+- 将文件扩展名映射为 Markdown 代码块标识符
 - 支持特殊情况的自定义语言映射
 - 确保在不同平台上正确的语法高亮显示
 
@@ -181,6 +212,8 @@ def hello_world():
 - 🐛 **问题报告**：在 GitHub Issues 中提交格式化的代码
 - 📖 **博客写作**：为技术博客准备代码示例
 - 👨‍🏫 **教学**：创建包含正确格式代码的教育材料
+- 📦 **项目文档**：将整个项目结构复制为文档
+- 🔄 **代码迁移**：在不同平台间传输代码并保持格式
 
 ## 国际化
 
@@ -190,6 +223,13 @@ def hello_world():
 - 更多语言即将推出！
 
 ## 更新日志
+
+### 0.0.2
+- ✨ **资源管理器集成**：在资源管理器中右键文件/文件夹复制为 Markdown
+- 📂 **多文件支持**：一次选择并复制多个文件或文件夹
+- 🔄 **递归处理**：自动处理文件夹中的所有文本文件
+- 🎯 **智能文件检测**：自动检测并过滤文本文件
+- 🌐 **扩展语言支持**：增强的文件类型检测和语言映射
 
 ### 0.0.1
 - 🎉 初始版本发布

@@ -1,7 +1,8 @@
 {
-  "command.copySelected.title": "复制为md",
+  "command.copySelected.title": "复制为 Markdown",
+  "command.copyFiles.title": "复制为 Markdown",
   "command.category": "复制工具",
-  "configuration.title": "复制为Markdown",
+  "configuration.title": "复制为 Markdown",
   "configuration.includeFileName.description": "是否包含文件名",
   "configuration.includeFilePath.description": "是否包含文件路径（需要启用包含文件名选项）",
   "configuration.filePathBase.description": "文件路径显示的基准路径（需要启用包含文件名选项）",

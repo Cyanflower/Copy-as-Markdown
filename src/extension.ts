@@ -71,6 +71,50 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // 注册文件资源管理器复制命令
+    let disposable2 = vscode.commands.registerCommand('copyAsMarkdown.copyFiles', async (uri: vscode.Uri, uris: vscode.Uri[]) => {
+        // 如果没有传入 uris，说明是单选，使用 uri
+        const selectedUris = uris && uris.length > 0 ? uris : (uri ? [uri] : []);
+        
+        if (selectedUris.length === 0) {
+            vscode.window.showErrorMessage(t('message.noFilesSelected'));
+            return;
+        }
+
+        try {
+            const markdownContents: string[] = [];
+            let processedFileCount = 0;
+
+            for (const selectedUri of selectedUris) {
+                const stat = await vscode.workspace.fs.stat(selectedUri);
+                
+                if (stat.type === vscode.FileType.File) {
+                    // 处理文件
+                    const content = await processFile(selectedUri);
+                    if (content) {
+                        markdownContents.push(content);
+                        processedFileCount++;
+                    }
+                } else if (stat.type === vscode.FileType.Directory) {
+                    // 处理文件夹
+                    const folderContents = await processFolder(selectedUri);
+                    markdownContents.push(...folderContents.contents);
+                    processedFileCount += folderContents.count;
+                }
+            }
+
+            if (markdownContents.length > 0) {
+                const finalContent = markdownContents.join('\n\n');
+                await vscode.env.clipboard.writeText(finalContent);
+                vscode.window.showInformationMessage(t('message.copyFilesSuccess', processedFileCount.toString()));
+            } else {
+                vscode.window.showWarningMessage(t('message.noFilesSelected'));
+            }
+        } catch (error) {
+            vscode.window.showErrorMessage(t('message.copyFailed') + ': ' + error);
+        }
+    });
+
     context.subscriptions.push(disposable);
 }
 
@@ -89,6 +133,11 @@ function getExtensionConfig(): ExtensionConfig {
         addEllipsisDetail: config.get('addEllipsisDetail', false)
     };
 }
+
+// ====================================
+// 文件选择复制部分
+// ====================================
+
 
 /**
  * 获取文件信息（文件名或路径）
@@ -266,6 +315,162 @@ function getEllipsisInfo(editor: vscode.TextEditor, selection: vscode.Selection,
         topEllipsis,
         bottomEllipsis
     };
+}
+
+
+// ====================================
+// 资源管理器选择复制部分
+// ====================================
+
+/**
+ * 处理单个文件
+ */
+async function processFile(uri: vscode.Uri): Promise<string | null> {
+    try {
+        const config = getExtensionConfig();
+        
+        // 检查文件是否为文本文件
+        if (!isTextFile(uri.fsPath)) {
+            console.log(t('message.unsupportedFileType', path.basename(uri.fsPath)));
+            return null;
+        }
+
+        // 读取文件内容
+        const fileContent = await vscode.workspace.fs.readFile(uri);
+        const textContent = Buffer.from(fileContent).toString('utf8');
+        
+        // 获取文件信息
+        const fileInfo = getFileInfo(uri, config);
+        
+        // 获取语言标识符
+        const languageId = getLanguageIdentifierFromPath(uri.fsPath, config.languageMap);
+        
+        // 生成 Markdown 格式
+        const markdownContent = config.includeFileName 
+            ? `${fileInfo}\n\`\`\`${languageId}\n${textContent}\n\`\`\``
+            : `\`\`\`${languageId}\n${textContent}\n\`\`\``;
+        
+        return markdownContent;
+    } catch (error) {
+        vscode.window.showErrorMessage(t('message.fileReadError', path.basename(uri.fsPath)));
+        return null;
+    }
+}
+
+/**
+ * 处理文件夹（递归）
+ */
+async function processFolder(uri: vscode.Uri): Promise<{ contents: string[], count: number }> {
+    const contents: string[] = [];
+    let count = 0;
+
+    try {
+        const entries = await vscode.workspace.fs.readDirectory(uri);
+        
+        for (const [name, type] of entries) {
+            const childUri = vscode.Uri.joinPath(uri, name);
+            
+            if (type === vscode.FileType.File) {
+                const content = await processFile(childUri);
+                if (content) {
+                    contents.push(content);
+                    count++;
+                }
+            } else if (type === vscode.FileType.Directory) {
+                // 递归处理子文件夹
+                const folderResult = await processFolder(childUri);
+                contents.push(...folderResult.contents);
+                count += folderResult.count;
+            }
+        }
+    } catch (error) {
+        console.error('Error processing folder:', error);
+    }
+
+    return { contents, count };
+}
+
+/**
+ * 根据文件路径获取语言标识符
+ */
+function getLanguageIdentifierFromPath(filePath: string, customMap: { [key: string]: string }): string {
+    const ext = path.extname(filePath).toLowerCase();
+    
+    // 文件扩展名到语言的映射
+    const extensionToLanguage: { [key: string]: string } = {
+        '.js': 'javascript',
+        '.jsx': 'javascript',
+        '.ts': 'typescript',
+        '.tsx': 'typescript',
+        '.py': 'python',
+        '.java': 'java',
+        '.cs': 'csharp',
+        '.cpp': 'cpp',
+        '.cc': 'cpp',
+        '.cxx': 'cpp',
+        '.c': 'c',
+        '.h': 'c',
+        '.hpp': 'cpp',
+        '.html': 'html',
+        '.htm': 'html',
+        '.css': 'css',
+        '.scss': 'scss',
+        '.sass': 'scss',
+        '.less': 'css',
+        '.json': 'json',
+        '.xml': 'xml',
+        '.yaml': 'yaml',
+        '.yml': 'yaml',
+        '.md': 'markdown',
+        '.sh': 'bash',
+        '.bash': 'bash',
+        '.zsh': 'bash',
+        '.ps1': 'powershell',
+        '.sql': 'sql',
+        '.go': 'go',
+        '.rs': 'rust',
+        '.php': 'php',
+        '.rb': 'ruby',
+        '.swift': 'swift',
+        '.kt': 'kotlin',
+        '.vue': 'html',
+        '.svelte': 'html',
+        '.toml': 'toml',
+        '.ini': 'ini',
+        '.cfg': 'ini',
+        '.conf': 'ini'
+    };
+
+    const languageFromExt = extensionToLanguage[ext];
+    
+    // 检查用户自定义映射
+    if (languageFromExt && customMap[languageFromExt]) {
+        return customMap[languageFromExt];
+    }
+    
+    return languageFromExt || 'text';
+}
+
+/**
+ * 判断是否为文本文件
+ */
+function isTextFile(filePath: string): boolean {
+    const ext = path.extname(filePath).toLowerCase();
+    
+    // 支持的文本文件扩展名
+    const textExtensions = [
+        '.js', '.jsx', '.ts', '.tsx', '.py', '.java', '.cs', '.cpp', '.cc', '.cxx', '.c', '.h', '.hpp',
+        '.html', '.htm', '.css', '.scss', '.sass', '.less', '.json', '.xml', '.yaml', '.yml', '.md',
+        '.sh', '.bash', '.zsh', '.ps1', '.sql', '.go', '.rs', '.php', '.rb', '.swift', '.kt',
+        '.vue', '.svelte', '.toml', '.ini', '.cfg', '.conf', '.txt', '.log', '.env', '.gitignore',
+        '.dockerfile', '.makefile', '.cmake', '.gradle', '.properties', '.bat', '.cmd'
+    ];
+    
+    // 无扩展名的特殊文件
+    const basename = path.basename(filePath).toLowerCase();
+    const specialFiles = ['dockerfile', 'makefile', 'cmakefile', 'rakefile', 'gemfile'];
+    
+    return textExtensions.includes(ext) || specialFiles.includes(basename) || ext === '';
 }
 
 export function deactivate() {}

@@ -6,6 +6,10 @@ interface I18nMessages {
     'message.noSelection': string;
     'message.copySuccess': string;
     'message.copyFailed': string;
+    'message.noFilesSelected': string;
+    'message.copyFilesSuccess': string;
+    'message.fileReadError': string;
+    'message.unsupportedFileType': string;
     // 省略号详细信息
     'ellipsis.above.lines': string;
     'ellipsis.below.lines': string;
@@ -22,7 +26,11 @@ const messages: { [locale: string]: I18nMessages } = {
         'ellipsis.above.lines': '省略上方 {0} 行...',
         'ellipsis.below.lines': '省略下方 {0} 行...',
         'ellipsis.above.line': '省略上方 1 行...',
-        'ellipsis.below.line': '省略下方 1 行...'
+        'ellipsis.below.line': '省略下方 1 行...',
+        'message.noFilesSelected': '没有选择文件',
+        'message.copyFilesSuccess': '已复制 {0} 个文件为 Markdown 格式',
+        'message.fileReadError': '读取文件失败: {0}',
+        'message.unsupportedFileType': '不支持的文件类型: {0}'
     },
     'en': {
         'message.noActiveEditor': 'No active editor',
@@ -32,7 +40,11 @@ const messages: { [locale: string]: I18nMessages } = {
         'ellipsis.above.lines': 'Omitted {0} lines above...',
         'ellipsis.below.lines': 'Omitted {0} lines below...',
         'ellipsis.above.line': 'Omitted 1 line above...',
-        'ellipsis.below.line': 'Omitted 1 line below...'
+        'ellipsis.below.line': 'Omitted 1 line below...',
+        'message.noFilesSelected': 'No files selected',
+        'message.copyFilesSuccess': 'Copied {0} files as Markdown format',
+        'message.fileReadError': 'Failed to read file: {0}',
+        'message.unsupportedFileType': 'Unsupported file type: {0}'
     }
 };
 

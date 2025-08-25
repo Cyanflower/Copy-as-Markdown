@@ -1,5 +1,6 @@
 {
   "command.copySelected.title": "Copy as Markdown",
+  "command.copyFiles.title": "Copy as Markdown",
   "command.category": "Copy Tools",
   "configuration.title": "Copy as Markdown",
   "configuration.includeFileName.description": "Whether to include file name",

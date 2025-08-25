@@ -2,7 +2,7 @@
   "name": "copy-as-markdown",
   "displayName": "Copy as Markdown",
   "description": "Copy selected code with markdown formatting",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "cyanflower",
   "repository": {
     "type": "git",
@@ -26,6 +26,11 @@
         "command": "copyAsMarkdown.copySelected",
         "title": "%command.copySelected.title%",
         "category": "%command.category%"
+      },
+      {
+        "command": "copyAsMarkdown.copyFiles",
+        "title": "%command.copyFiles.title%",
+        "category": "%command.category%"
       }
     ],
     "menus": {
@@ -36,10 +41,19 @@
           "group": "9_cutcopypaste"
         }
       ],
+      "explorer/context": [
+        {
+          "command": "copyAsMarkdown.copyFiles",
+          "group": "9_cutcopypaste"
+        }
+      ],
       "commandPalette": [
         {
           "command": "copyAsMarkdown.copySelected",
           "when": "editorIsOpen"
+        },
+        {
+          "command": "copyAsMarkdown.copyFiles"
         }
       ]
     },

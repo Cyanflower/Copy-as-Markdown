@@ -14,14 +14,24 @@ A VSCode extension that copies selected code as Markdown format with intelligent
 - ⌨️ **Keyboard Shortcuts**: Quick access via customizable hotkeys
 - 🌍 **i18n Support**: Automatically adapts to your VSCode language settings
 - ⚙️ **Highly Configurable**: Extensive customization options
+- 📂 **Explorer Integration**: Right-click files/folders in Explorer to copy entire contents
+- 🗂️ **Multi-File Support**: Select and copy multiple files or folders at once
+- 🔄 **Recursive Folder Processing**: Automatically processes all text files in folders
 
 ## Usage
 
+### Copy Selected Code
 1. Open any code file in VSCode
 2. Select the code snippet you want to copy
 3. Right-click on the selection
 4. Choose "Copy as Markdown" from the context menu
 5. The formatted Markdown content is now in your clipboard
+
+### Copy Entire Files/Folders
+1. In the Explorer panel, right-click on one or more files/folders
+2. Choose "Copy as Markdown" from the context menu
+3. All selected files will be copied as Markdown code blocks
+4. Folders will be processed recursively, including all text files
 
 **Alternative methods:**
 - Use keyboard shortcut: `Ctrl+Alt+C` (Windows/Linux) or `Cmd+Shift+C` (macOS)
@@ -29,28 +39,44 @@ A VSCode extension that copies selected code as Markdown format with intelligent
 
 ## Output Formats
 
-### Full File Selection
-```
+### Single File Selection
+````
 filename.py
 ```python
 def hello_world():
     print("Hello, World!")
     return "success"
 ```
+````
 
-### Partial Selection (Smart Ellipsis)
+### Multiple Files
+````
+utils.py
+```python
+def helper_function():
+    return "helper"
+```
+
+main.js
+```javascript
+console.log("Hello World");
+```
+````
+
+### Partial Code Selection (Smart Ellipsis)
 
 #### Selection from File Beginning
-```
+````
 filename.py:
 ```python
 def hello_world():
     print("Hello, World!")
 ...
 ```
+````
 
 #### Selection from File Middle
-```
+````
 filename.py:
 ```python
 ...
@@ -58,18 +84,20 @@ def hello_world():
     print("Hello, World!")
 ...
 ```
+````
 
 #### Selection from File End
-```
+````
 filename.py:
 ```python
 ...
 def hello_world():
     print("Hello, World!")
 ```
+````
 
 #### With Detailed Ellipsis (Optional)
-```
+````
 src/utils.py:
 ```python
 Omitted 15 lines above...
@@ -77,6 +105,21 @@ def hello_world():
     print("Hello, World!")
 Omitted 8 lines below...
 ```
+````
+
+## Supported File Types
+
+The extension automatically detects and processes text files including:
+
+- **Programming Languages**: JavaScript, TypeScript, Python, Java, C/C++/C#, Go, Rust, PHP, Ruby, Swift, Kotlin, etc.
+- **Web Technologies**: HTML, CSS, SCSS, Vue, React (JSX/TSX)
+- **Data Formats**: JSON, XML, YAML, TOML
+- **Configuration Files**: .env, .ini, .conf, .properties
+- **Scripts**: Shell, PowerShell, Batch files
+- **Documentation**: Markdown, plain text
+- **Special Files**: Dockerfile, Makefile, .gitignore
+
+Binary files are automatically skipped during folder processing.
 
 ## Configuration Options
 
@@ -110,24 +153,6 @@ Omitted 8 lines below...
 }
 ```
 
-## Supported Languages
-
-The extension supports all languages recognized by VSCode, including but not limited to:
-
-- JavaScript/TypeScript
-- Python
-- Java
-- C/C++/C#
-- HTML/CSS/SCSS
-- JSON/XML/YAML
-- Shell/PowerShell
-- Go/Rust
-- PHP/Ruby
-- Swift/Kotlin
-- SQL
-- Vue/React (JSX/TSX)
-- And many more...
-
 ## Smart Features
 
 ### Intelligent Ellipsis
@@ -142,8 +167,14 @@ The extension supports all languages recognized by VSCode, including but not lim
 - Supports unsaved files (displays as "untitled")
 - Optional file path display with workspace-relative or absolute paths
 
+### Explorer Integration
+- **Single Selection**: Right-click any file to copy its entire content
+- **Multi-Selection**: Select multiple files/folders and copy all at once
+- **Folder Processing**: Recursively processes all text files in selected folders
+- **Smart Filtering**: Only processes text files, skips binary files automatically
+
 ### Language Mapping
-- Maps VSCode language IDs to Markdown code block identifiers
+- Maps file extensions to Markdown code block identifiers
 - Supports custom language mapping for special cases
 - Ensures proper syntax highlighting across different platforms
 
@@ -181,6 +212,8 @@ The extension supports all languages recognized by VSCode, including but not lim
 - 🐛 **Issue Reporting**: Submit formatted code in GitHub Issues
 - 📖 **Blog Writing**: Prepare code examples for technical blogs
 - 👨‍🏫 **Teaching**: Create educational materials with properly formatted code
+- 📦 **Project Documentation**: Copy entire project structures as documentation
+- 🔄 **Code Migration**: Transfer code between different platforms maintaining formatting
 
 ## Internationalization
 
@@ -190,6 +223,13 @@ The extension automatically adapts to your VSCode language settings:
 - More languages coming soon!
 
 ## Changelog
+
+### 0.0.2
+- ✨ **Explorer Integration**: Right-click files/folders in Explorer to copy as Markdown
+- 📂 **Multi-File Support**: Select and copy multiple files or folders at once
+- 🔄 **Recursive Processing**: Automatically processes all text files in folders
+- 🎯 **Smart File Detection**: Automatically detects and filters text files
+- 🌐 **Extended Language Support**: Enhanced file type detection and language mapping
 
 ### 0.0.1
 - 🎉 Initial release
