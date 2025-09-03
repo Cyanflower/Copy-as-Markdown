@@ -9,6 +9,7 @@ interface ExtensionConfig {
     languageMap: { [key: string]: string };
     addEllipsis: boolean;
     addEllipsisDetail: boolean;
+    customTextExtensions: string[];
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -130,7 +131,8 @@ function getExtensionConfig(): ExtensionConfig {
         filePathBase: config.get('filePathBase', 'workspace'),
         languageMap: config.get('languageMap', {}),
         addEllipsis: config.get('addEllipsis', true),
-        addEllipsisDetail: config.get('addEllipsisDetail', false)
+        addEllipsisDetail: config.get('addEllipsisDetail', false),
+        customTextExtensions: config.get<string[]>('customTextExtensions', [])
     };
 }
 
@@ -330,7 +332,7 @@ async function processFile(uri: vscode.Uri): Promise<string | null> {
         const config = getExtensionConfig();
         
         // 检查文件是否为文本文件
-        if (!isTextFile(uri.fsPath)) {
+        if (!isTextFile(uri.fsPath, config)) {
             console.log(t('message.unsupportedFileType', path.basename(uri.fsPath)));
             return null;
         }
@@ -454,23 +456,29 @@ function getLanguageIdentifierFromPath(filePath: string, customMap: { [key: stri
 /**
  * 判断是否为文本文件
  */
-function isTextFile(filePath: string): boolean {
+function isTextFile(filePath: string, config: ExtensionConfig): boolean {
     const ext = path.extname(filePath).toLowerCase();
     
     // 支持的文本文件扩展名
-    const textExtensions = [
+    const defaultTextExtensions  = [
         '.js', '.jsx', '.ts', '.tsx', '.py', '.java', '.cs', '.cpp', '.cc', '.cxx', '.c', '.h', '.hpp',
         '.html', '.htm', '.css', '.scss', '.sass', '.less', '.json', '.xml', '.yaml', '.yml', '.md',
         '.sh', '.bash', '.zsh', '.ps1', '.sql', '.go', '.rs', '.php', '.rb', '.swift', '.kt',
         '.vue', '.svelte', '.toml', '.ini', '.cfg', '.conf', '.txt', '.log', '.env', '.gitignore',
         '.dockerfile', '.makefile', '.cmake', '.gradle', '.properties', '.bat', '.cmd'
     ];
-    
+    // 规范化用户自定义的扩展名（确保都以 '.' 开头且为小写），然后与默认列表合并
+    const customExtensions = config.customTextExtensions.map(customExt => 
+        (customExt.startsWith('.') ? customExt : '.' + customExt).toLowerCase()
+    );
+
+    const allTextExtensions = [...defaultTextExtensions, ...customExtensions];
+
     // 无扩展名的特殊文件
     const basename = path.basename(filePath).toLowerCase();
     const specialFiles = ['dockerfile', 'makefile', 'cmakefile', 'rakefile', 'gemfile'];
     
-    return textExtensions.includes(ext) || specialFiles.includes(basename) || ext === '';
+    return allTextExtensions .includes(ext) || specialFiles.includes(basename) || ext === '';
 }
 
 export function deactivate() {}

@@ -10,5 +10,6 @@
   "configuration.filePathBase.absolute": "System absolute path",
   "configuration.languageMap.description": "Custom language mapping for code blocks. Example: {\"vue\": \"html\", \"jsx\": \"javascript\"}",
   "configuration.addEllipsis.description": "Whether to add ellipsis (...) for partial selections",
-  "configuration.addEllipsisDetail.description": "Whether to use detailed ellipsis with line counts (requires addEllipsis to be enabled)"
+  "configuration.addEllipsisDetail.description": "Whether to use detailed ellipsis with line counts (requires addEllipsis to be enabled)",
+  "configuration.customTextExtensions.description": "A list of custom file extensions (e.g., '.proto', '.myext') to be treated as text files for the 'Copy Files' command."
 }

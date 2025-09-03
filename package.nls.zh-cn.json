@@ -10,5 +10,6 @@
   "configuration.filePathBase.absolute": "系统绝对路径",
   "configuration.languageMap.description": "自定义语言映射，用于代码块语言标识。示例：{\"vue\": \"html\", \"jsx\": \"javascript\"}",
   "configuration.addEllipsis.description": "部分选择时是否添加省略号（...）",
-  "configuration.addEllipsisDetail.description": "是否使用详细的省略号显示行数（需要启用添加省略号选项）"
+  "configuration.addEllipsisDetail.description": "是否使用详细的省略号显示行数（需要启用添加省略号选项）",
+  "configuration.customTextExtensions.description": "自定义要作为文本文件处理的文件扩展名列表（例如：'.proto', '.myext'），用于“复制文件”命令。"
 }

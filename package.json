@@ -105,6 +105,14 @@
           "type": "boolean",
           "default": false,
           "description": "%configuration.addEllipsisDetail.description%"
+        },
+        "copyAsMarkdown.customTextExtensions": {
+          "type": "array",
+          "default": [],
+          "description": "%configuration.customTextExtensions.description%",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
