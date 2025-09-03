@@ -2,7 +2,7 @@
   "name": "copy-as-markdown",
   "displayName": "Copy as Markdown",
   "description": "Copy selected code with markdown formatting",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "cyanflower",
   "repository": {
     "type": "git",
